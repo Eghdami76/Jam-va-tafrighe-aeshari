@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>جمع و تفریق اعداد اعشاری</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+:root{--bg:light-dark(#efe8d2,#14100c);--ink:light-dark(#2a2118,#f2e9d6);--cd:light-dark(#fffaf0,#2a231a);--ln:light-dark(#c9b98f,#4a3f2e);--ac:light-dark(#c2410c,#ff922b);--bk:#17382d;--ch:#f6f2e4;--ye:#ffd166;--gr:#8ce99a;--rd:#ff8787;--pu:#d0bfff;color-scheme:light dark;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;padding:8px 10px 16px;background:var(--bg);color:var(--ink);font:700 18px/1.7 Vazirmatn,Tahoma,system-ui,sans-serif;text-align:center}
+h1{margin:4px 0 0;font-size:25px;font-weight:800}
+.cr{margin:0 0 4px;font-size:13px;font-weight:400;opacity:.7}
+[hidden]{display:none!important}
+button{font:inherit;font-weight:700;color:var(--ink);background:var(--cd);border:2px solid var(--ln);border-radius:14px;padding:6px 16px;min-height:48px;cursor:pointer}
+.ch{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.ch button{min-height:40px;font-size:16px;padding:4px 12px}
+.ch button.on,#nx{background:var(--ac);border-color:var(--ac);color:light-dark(#fff,#1a1208)}
+#nx:disabled{opacity:.5}
+.ct{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0}
+#ar{display:flex;gap:8px}
+#ar button{font-size:24px;min-width:64px}
+#brd{background:var(--bk);border:7px solid #9a6a3a;border-radius:18px;max-width:560px;margin:8px auto;padding:8px 4px;color:var(--ch);box-shadow:inset 0 0 20px rgba(0,0,0,.4)}
+#hz{direction:ltr;unicode-bidi:isolate;font-weight:800;font-size:calc(var(--w)*.8);white-space:nowrap;line-height:var(--h);min-height:var(--h)}
+.hs{display:inline-block;transition:opacity .4s}
+.hs.p{color:var(--ye)}
+.op{margin:0 .35em}
+.ans{color:var(--gr)}
+#bd{position:relative;margin:4px auto;direction:ltr;outline:1px solid rgba(255,255,255,.13);background-image:linear-gradient(rgba(255,255,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.13) 1px,transparent 1px);background-size:var(--w) var(--h)}
+#lx{position:absolute;inset:0}
+.x,.t{position:absolute;width:var(--w);height:var(--h);line-height:var(--h);text-align:center;font-weight:800;font-size:calc(var(--w)*.8);pointer-events:none;color:var(--ch)}
+.t{transition:left .9s ease,top .9s ease,opacity .5s}
+.pn{color:var(--ye)}
+.rs{color:var(--gr)}
+.z{color:var(--pu)}
+.cy{color:var(--rd);font-size:calc(var(--w)*.42);line-height:calc(var(--h)*.8)}
+.hl{background:rgba(255,209,102,.28);border-radius:10px;height:calc(var(--h)*4)}
+.gd{background:rgba(255,209,102,.12);border-inline:2px dashed var(--ye);height:calc(var(--h)*4)}
+.ln{height:5px;line-height:0;border-radius:3px;background:var(--ch)}
+.xx{background:linear-gradient(to top right,transparent calc(50% - 2px),var(--rd) calc(50% - 2px),var(--rd) calc(50% + 2px),transparent calc(50% + 2px))}
+.nv{color:var(--rd);font-size:calc(var(--w)*.5)}
+.xx.an{animation:fd .5s}
+.nv.an{animation:pp .5s .45s backwards}
+@keyframes fd{from{opacity:0;transform:scale(.2)}}
+@keyframes pp{from{opacity:0;transform:scale(0)}}
+.zp{width:calc(var(--w)*.7);height:calc(var(--w)*.7);margin:calc((var(--h) - var(--w)*.7)/2) calc(var(--w)*.15);border:3px dashed var(--pu);border-radius:50%;pointer-events:auto;cursor:pointer;animation:pl 1s infinite}
+@keyframes pl{50%{transform:scale(1.15)}}
+@keyframes sh{25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+.sh{animation:sh .4s}
+#cp{min-height:6.2em;padding:4px 8px;font-size:18px;line-height:1.9}
+#cp b{color:var(--ye)}
+@media(prefers-reduced-motion:reduce){.t{transition-duration:.01s}}
+</style>
+</head>
+<body>
+<h1>جمع و تفریق اعداد اعشاری</h1>
+<p class="cr">طراح: سارا اقدامی مقدم</p>
+<div class="ch" id="ops"><button data-v="+" class="on">جمع</button><button data-v="−">تفریق</button></div>
+<div class="ch" id="tys"><button data-v="0" class="on">اعشار با اعشار</button><button data-v="1">کامل با اعشار</button><button data-v="2">عددهای بزرگ‌تر</button></div>
+<div id="brd"><div id="hz"></div><div id="bd"></div><div id="cp"></div></div>
+<div class="ct">
+<span id="ar" dir="ltr" hidden><button id="bl" aria-label="به چپ">←</button><button id="br" aria-label="به راست">→</button></span>
+<button id="nx">گام بعد</button><button id="rs">از اول</button><button id="nw">مسئله جدید</button>
+</div>
+<script>
+const $=s=>document.querySelector(s),bd=$('#bd');
+const F=s=>String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]),M=s=>`<bdi dir="ltr">${F(s)}</bdi>`;
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),dg=n=>Array.from({length:n},()=>R(0,9)).join('');
+const num=(il,fl)=>(il==1?''+R(0,9):R(1,9)+dg(il-1))+(fl?'/'+dg(fl-1)+R(1,9):'');
+const val=s=>parseFloat(s.replace('/','.')),fl=s=>(s.split('/')[1]||'').length;
+const iN=['یکان','دهگان','صدگان','هزارگان'],fN=['دهم','صدم','هزارم','ده‌هزارم'];
+let op='+',ty=0,S,W,H;
+
+function gen(){
+ let a,b;
+ do{
+  if(ty==0){const f=R(1,3);let g=R(1,3);if(g==f)g=f%3+1;a=num(R(1,2),f);b=num(R(1,2),g)}
+  else if(ty==1){a=num(R(1,3),0);if(a=='0')a='8';b=num(R(1,2),R(1,3));if(Math.random()<.5)[a,b]=[b,a]}
+  else{const f=R(1,4);let g=R(1,4);if(g==f)g=f%4+1;a=num(R(1,3),f);b=num(R(1,3),g)}
+  if(op=='−'&&val(a)<val(b))[a,b]=[b,a];
+ }while(val(a)==val(b)||(op=='−'&&ty!=1&&fl(a)>=fl(b)&&Math.random()<.7));
+ return[a,b]}
+
+function prep(A,B){
+ const[ai,af='']=A.split('/'),[bi,bf='']=B.split('/'),L=Math.max(ai.length,bi.length),R=Math.max(af.length,bf.length),n=L+R;
+ const d=(i,f)=>(i.padStart(L,'0')+f.padEnd(R,'0')).split('').map(Number),dA=d(ai,af),dB=d(bi,bf),res=[],cin=[],cur=dA.slice(),snap=[],ev=[];let c=0;
+ for(let i=n-1;i>=0;i--){cin[i]=c;if(op=='+'){const t=dA[i]+dB[i]+c;res[i]=t%10;c=t>9?1:0}else{let k=-1;if(cur[i]<dB[i]){k=i-1;while(k>=0&&!cur[k])k--;cur[k]--;for(let m=k+1;m<i;m++)cur[m]=9;cur[i]+=10}res[i]=cur[i]-dB[i];ev[n-1-i]=k;snap[n-1-i]=cur.slice()}}
+ const e=op=='+'&&c?1:0,P=1+e+L,C=P+2+R,Z=[];
+ [[1,af],[2,bf]].forEach(([r,f])=>{for(let k=P+1+f.length;k<C-1;k++)Z.push([r,k])});
+ const st=['hz','r1','r2'];if(Z.length)st.push('zero');st.push('sign');
+ for(let j=0;j<n;j++){st.push('c'+j);if(j==R-1)st.push('pt')}
+ st.push('done');
+ return{A,B,ai,af,bi,bf,dA,dB,L,R,n,res,cin,snap,ev,fc:c,e,P,C,Z,st,k:0,zf:new Set,s:0,t1:[],t2:[],pre:''}}
+
+function lay(){
+ W=Math.max(30,Math.min(64,Math.floor((Math.min(innerWidth,560)-40)/S.C)));H=Math.round(W*1.2);
+ const r=document.documentElement.style;r.setProperty('--w',W+'px');r.setProperty('--h',H+'px');
+ bd.style.width=S.C*W+'px';bd.style.height=4*H+'px'}
+
+function start(A,B){
+ S=prep(A,B);lay();bd.innerHTML='<div id="lx"></div>';
+ const sp=(s,n)=>[...s].map((ch,k)=>`<span class="hs${ch=='/'?' p':''}" data-n="${n}" data-k="${k}">${F(ch)}</span>`).join('');
+ $('#hz').innerHTML=sp(A,'a')+`<span class="hs op">${op}</span>`+sp(B,'b');
+ ren();ui()}
+
+const toks=s=>{const[i,f]=s.split('/');const a=[...i].map(ch=>({ch}));return a.concat(s.includes('/')?[...('/'+f)].map(ch=>({ch})):[{ch:'/',gh:1}])};
+
+function fly(w,row,start){
+ const tk=toks(w=='a'?S.A:S.B),bb=bd.getBoundingClientRect();
+ tk.forEach((t,k)=>{
+  const el=document.createElement('span');el.className='t'+(t.ch=='/'?' pn':'');el.textContent=F(t.ch);bd.appendChild(el);t.el=el;
+  const src=document.querySelector(`#hz [data-n="${w}"][data-k="${k}"]`);
+  el.style.transition='none';
+  if(src){const a=src.getBoundingClientRect();el.style.left=a.left-bb.left+a.width/2-W/2+'px';el.style.top=a.top-bb.top+a.height/2-H/2+'px';src.style.opacity=.2}
+  else{el.style.left=(start+k)*W+'px';el.style.top=row*H+'px';el.style.opacity=0}
+  el.offsetWidth;
+  requestAnimationFrame(()=>{el.style.transition='';el.style.transitionDelay=k*.12+'s';el.style.left=(start+k)*W+'px';el.style.top=row*H+'px';el.style.opacity=t.gh?.55:1});
+ });
+ return tk}
+
+function sh(d){
+ if(S.st[S.k]!='r2')return;
+ const s=S.s+d;if(s<1||s+S.t2.length>S.C)return;
+ S.s=s;S.t2.forEach((t,k)=>{t.el.style.transitionDelay='0s';t.el.style.left=(s+k)*W+'px'})}
+
+function ren(){
+ const k=S.k,nm=S.st[k],I=x=>S.st.indexOf(x),h=[],gc=i=>i<0?1:i<S.L?1+S.e+i:S.P+1+i-S.L;
+ const add=(c,col,row,tx)=>h.push(`<span class="x ${c}" style="left:${col*W}px;top:${row*H}px">${F(tx)}</span>`);
+ if(k>=I('r1'))add('gd',S.P,0,'');
+ const zi=I('zero');
+ if(zi>=0&&k>=zi)S.Z.forEach(([r,c],q)=>k>zi||S.zf.has(q)?add('z',c,r,0):h.push(`<span class="x zp" data-q="${q}" style="left:${c*W}px;top:${r*H}px"></span>`));
+ if(k>=I('sign')){add('',0,2,op);h.push(`<span class="x ln" style="left:0;top:${3*H-4}px;width:${(S.C-1)*W}px"></span>`)}
+ const cnt=S.st.slice(0,k+1).filter(x=>x[0]=='c').length;
+ if(nm[0]=='c')add('hl',gc(S.n-1-+nm.slice(1)),0,'');
+ for(let j=0;j<cnt;j++){
+  const i=S.n-1-j;
+  if(!(i<S.L-1&&S.res.slice(0,i+1).every(v=>!v)))add('rs',gc(i),3,S.res[i]);
+  if(op=='+'&&(i>0?S.cin[i-1]:S.fc))add('cy',gc(i-1),0,'۱');
+ }
+ if(op=='−'&&cnt){const cv=S.snap[cnt-1],pv=cnt>1?S.snap[cnt-2]:S.dA,an=nm[0]=='c';cv.forEach((v,i)=>{if(v!=S.dA[i]){const a=an&&v!=pv[i]?' an':'';add('xx'+a,gc(i),1,'');add('nv'+a,gc(i),0,v)}})}
+ if(S.fc&&cnt==S.n)add('rs',1,3,1);
+ if(k>=I('pt'))add('rs pn',S.P,3,'/');
+ $('#lx').innerHTML=h.join('')}
+
+function text(){
+ const nm=S.st[S.k],o=op=='+'?'جمع':'تفریق';
+ if(nm=='hz')return`این ${o} را افقی نوشته‌اند. برای حل کردنش باید عددها را <b>زیر هم</b> بنویسیم. «گام بعد» را بزن.`;
+ if(nm=='r1')return'اول عدد اول را می‌نویسیم؛ ممیزش را روی ستون زرد می‌گذاریم.'+(S.A.includes('/')?'':' عدد کامل هم ممیز دارد: درست بعد از یکان (ممیز نامرئی).');
+ if(nm=='r2')return'حالا عدد دوم را زیر عدد اول بنویس: اول <b>ممیزش</b> را پیدا کن و درست زیر ممیز عدد اول ببر. با ← و → جابه‌جایش کن و «بررسی» را بزن.'+(S.B.includes('/')?'':' (ممیز نامرئی عدد کامل را فراموش نکن!)');
+ if(nm=='zero')return'جاهای خالیِ سمت راستِ ممیز را با <b>صفر</b> پر می‌کنیم تا تعداد رقم‌های اعشار برابر شود. روی دایره‌ها بزن. صفر آخر اعشار، ارزش عدد را عوض نمی‌کند.';
+ if(nm=='sign')return`علامت ${op} را می‌نویسیم و زیر عددها خط می‌کشیم. محاسبه را از <b>راست</b> شروع می‌کنیم.`;
+ if(nm=='pt')return'ممیز را درست زیر ممیزها (ستون زرد) می‌گذاریم.';
+ if(nm=='done')return'آفرین! جواب را دوباره افقی هم می‌نویسیم: '+M(S.ans)+(S.cut?' (صفرهای آخر اعشار ارزشی ندارند.)':'');
+ const i=S.n-1-+nm.slice(1),x=S.dA[i],y=S.dB[i],c=S.cin[i],r=S.res[i],q=i<S.L?iN[S.L-1-i]:fN[i-S.L],g=v=>v<0?'−'+-v:v;
+ let s;if(op=='−'){const j=S.n-1-i,pv=j?S.snap[j-1][i]:x,cv=S.snap[j][i],k=S.ev[j],qn=z=>z<S.L?iN[S.L-1-z]:fN[z-S.L];return`ستون ${q}: `+(k>=0?`${M(pv)} از ${M(y)} کمتر است؛ از ستون ${qn(k)} ۱ تا قرض می‌گیریم (رقم‌ها خط می‌خورند)${i-k>1?' (صفرهای بین راه ۹ می‌شوند)':''}: ${M(`${cv} − ${y} = ${r}`)}`:(pv!=x?`این رقم حالا ${M(pv)} است: `:'')+M(`${pv} − ${y} = ${r}`))+'.'}
+ if(op=='+'){const t=x+y+c;s=`${M(`${x} + ${y}${c?' + ۱':''} = ${t}`)} ← ${M(r)} را می‌نویسیم${t>9?' و ۱ نقلی می‌بریم':''}.`}
+ else{const t=x-c;s=(c?M(`${x} − ۱ = ${g(t)}`)+'؛ ':'')+(t<y?`${M(g(t))} از ${M(y)} کمتر است؛ قرض می‌گیریم: ${M(`${t+10} − ${y} = ${r}`)}`:M(`${t} − ${y} = ${r}`))+'.'}
+ return`ستون ${q}: ${s}`}
+
+function ui(){
+ const nm=S.st[S.k];
+ $('#cp').innerHTML=S.pre+text();S.pre='';
+ $('#ar').hidden=nm!='r2';
+ $('#nx').textContent=nm=='r2'?'بررسی ✔':nm=='done'?'تمام شد 🎉':'گام بعد';
+ $('#nx').disabled=nm=='done'}
+
+function go(){
+ let nm=S.st[S.k];if(nm=='done')return;
+ if(nm=='r2'){
+  const df=S.P-(S.s+S.bi.length);
+  if(df){bd.classList.remove('sh');void bd.offsetWidth;bd.classList.add('sh');
+   $('#cp').innerHTML='ممیزها هنوز زیر هم نیستند! عدد دوم را کمی به <b>'+(df>0?'راست':'چپ')+'</b> ببر. ممیز زردِ عدد دوم باید دقیقاً زیر ممیز عدد اول باشد.';return}
+  S.pre='آفرین! ممیزها زیر هم قرار گرفتند. ';
+ }
+ if(nm=='zero')S.Z.forEach((_,q)=>S.zf.add(q));
+ nm=S.st[++S.k];
+ if(nm=='r1')S.t1=fly('a',1,S.P-S.ai.length);
+ if(nm=='r2'){const a=S.P-S.bi.length,mx=S.C-S.bi.length-1-S.bf.length,o=[-2,-1,1,2].map(d=>a+d).filter(s=>s>=1&&s<=mx);S.s=o[R(0,o.length-1)];S.t2=fly('b',2,S.s)}
+ if(nm=='done'){
+  const ii=S.res.slice(0,S.L).join('');
+  const a=(S.fc?'1'+ii:ii.replace(/^0+(?=\d)/,''))+'/'+S.res.slice(S.L).join('');
+  const b=a.replace(/0+$/,'').replace(/\/$/,'');
+  S.cut=b!=a;S.ans=b;
+  document.querySelectorAll('#hz .hs').forEach(x=>x.style.opacity=1);
+  $('#hz').insertAdjacentHTML('beforeend',`<span class="hs op">=</span><span class="hs ans">${F(b)}</span>`);
+ }
+ ren();ui()}
+
+document.querySelectorAll('.ch button').forEach(b=>b.onclick=()=>{
+ const g=b.parentElement;g.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b));
+ if(g.id=='ops')op=b.dataset.v;else ty=+b.dataset.v;
+ start(...gen())});
+bd.onclick=e=>{const q=e.target.dataset.q;if(q!=null&&S.st[S.k]=='zero'){S.zf.add(+q);ren()}};
+$('#nx').onclick=go;
+$('#rs').onclick=()=>start(S.A,S.B);
+$('#nw').onclick=()=>start(...gen());
+$('#bl').onclick=()=>sh(-1);
+$('#br').onclick=()=>sh(1);
+let lw=innerWidth;addEventListener('resize',()=>{if(innerWidth!=lw){lw=innerWidth;start(S.A,S.B)}});
+start(...gen());
+</script>
+</body>
+</html>
